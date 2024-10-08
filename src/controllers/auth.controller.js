@@ -8,13 +8,10 @@ import bcrypt from "bcrypt";
 import { apiError } from "../utils/apiError.js";
 import Jwt from "jsonwebtoken";
 
-
 const user_register = asyncHandler(async (req, res) => {
   const { email, password, name } = req.body;
   const salt = await bcrypt.genSalt(12);
-
   const hashePassword = await bcrypt.hash(password.toString(), salt);
-
   const userData = await find_user_email_repo(email);
   if (userData) {
     throw new apiError(409, "email already used");
@@ -45,7 +42,7 @@ const user_login = asyncHandler(async (req, res) => {
     },
     process.env.USER_SECRET
   );
-  res.status(200).json(new apiResponse(200, token,'user login successfully'));
+  res.status(200).json(new apiResponse(200, token, "user login successfully"));
 });
 
 export { user_register, user_login };

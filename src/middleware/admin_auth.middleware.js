@@ -1,4 +1,4 @@
-import { apiError } from "../utils/apiError";
+import { apiError } from "../utils/apiError.js";
 
 const isAdmin = (req, res, next) => {
   if (req.user.is_admin === true) {

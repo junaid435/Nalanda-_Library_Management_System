@@ -5,7 +5,7 @@ import { apiError } from "../utils/apiError.js";
 const user_register_repo = async (email, name, password) => {
   const user = new user_model({
     email: email,
-    password: hashePassword,
+    password: password,
     name: name,
   });
   return user.save();
