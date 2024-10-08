@@ -19,6 +19,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 const borrow_book = asyncHandler(async (req, res) => {
   const { id } = req.body;
   let book_data = await find_book_by_id(id);
+  //checking the book is still have copys
   if (book_data?.total_copies <= 0) {
     throw new apiError(
       409,
@@ -49,6 +50,7 @@ const borrow_history = asyncHandler(async (req, res) => {
 });
 const most_borrow_books = asyncHandler(async (req, res) => {
   let data = await most_borrow_books_repo();
+  //report template
   const report = {
     reportTitle: "Top 5 Most Borrowed Books Report",
     reportGeneratedAt: new Date().toISOString(),
@@ -65,18 +67,22 @@ const active_members = asyncHandler(async (req, res) => {
   const data = await active_members_repo();
   res.status(200).json(new apiResponse(200, data));
 });
-const book_availability=asyncHandler(async(req,res)=>{
-  let available_books=await total_available_books()
-  let count=await total_book_count()
-  let borrow_books=await borrowed_books()
-res.status(200).json(new apiResponse(200,{count,available_books,borrow_books}))
-  
-})
+const book_availability = asyncHandler(async (req, res) => {
+  //available books
+  let available_books = await total_available_books();
+  //total book count
+  let count = await total_book_count();
+  //   borrow books list
+  let borrow_books = await borrowed_books();
+  res
+    .status(200)
+    .json(new apiResponse(200, { count, available_books, borrow_books }));
+});
 export {
   borrow_book,
   borrow_return,
   borrow_history,
   most_borrow_books,
   active_members,
-  book_availability
+  book_availability,
 };

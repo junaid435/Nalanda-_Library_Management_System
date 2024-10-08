@@ -14,11 +14,15 @@ import {
 
 const user_register = asyncHandler(async (req, res) => {
   const { email, password, name } = req.body;
+  //validation
   user_validation_email(email);
   validation_space(password);
   validation_space(name);
+  //hashing password
   const salt = await bcrypt.genSalt(12);
   const hashePassword = await bcrypt.hash(password.toString(), salt);
+
+  // user validation check if the email is already used or not
   const userData = await find_user_email_repo(email);
   if (userData) {
     throw new apiError(409, "email already used");
@@ -31,8 +35,10 @@ const user_register = asyncHandler(async (req, res) => {
 
 const user_login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  //validation
   user_validation_email(email);
   validation_space(password);
+  //user validation check if the user valid or not
   const userData = await find_user_email_repo(email);
   if (!userData) {
     throw new apiError(404, "User not found");
@@ -44,6 +50,7 @@ const user_login = asyncHandler(async (req, res) => {
   if (!result) {
     throw new apiError(401, "incorrect password");
   }
+  //jwt token create
   const token = Jwt.sign(
     {
       email: userData["email"],
