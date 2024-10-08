@@ -57,4 +57,17 @@ const list_book_repo = (filter_data) => {
     { $limit: limit },
   ]);
 };
-export { create_book_repo, update_book_repo, delete_book_repo, list_book_repo };
+const find_book_by_id = (id) => {
+  return book_model.findOne({ _id: id });
+};
+const book_total_copies_update=(id)=>{
+ return book_model.findByIdAndUpdate({_id:id},{$inc:{total_copies:-1}})
+}
+export {
+  create_book_repo,
+  update_book_repo,
+  delete_book_repo,
+  list_book_repo,
+  find_book_by_id,
+  book_total_copies_update
+};

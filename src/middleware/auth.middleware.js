@@ -4,14 +4,14 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  let token = req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
     throw new apiError(401, "Unauthorized request");
   }
 
   try {
     const decodedToken = jwt.verify(token, process.env.USER_SECRET);
-    const user = await find_user_email_repo(decodedToken);
+    const user = await find_user_email_repo(decodedToken['email']);
     if (!user) {
       throw new apiError(401, "Invalid access token");
     }
