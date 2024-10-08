@@ -1,4 +1,3 @@
-import { book_model } from "../models/book.models.js";
 import { borrow_model } from "../models/borrow.models.js";
 
 const borrow_book_repo = (req) => {
@@ -10,7 +9,7 @@ const borrow_book_repo = (req) => {
   return borrow_book.save();
 };
 const borrow_return_repo = (id) => {
-  return book_model.findByIdAndUpdate(
+  return borrow_model.findByIdAndUpdate(
     { _id: id },
     { $set: { return_status: true } }
   );
@@ -63,11 +62,46 @@ const active_members_repo = () => {
       },
     },
     {
-        $group: {
-          _id: "$user.email",
-          count: { $sum: 1 },
-        },
+      $group: {
+        _id: "$user.email",
+        count: { $sum: 1 },
       },
+    },
+  ]);
+};
+const borrowed_books = () => {
+  return borrow_model.aggregate([
+    {
+      $lookup: {
+        from: "books",
+        localField: "book",
+        foreignField: "_id",
+        as: "book",
+      },
+    },
+    {
+      $addFields: {
+        book: { $first: "$book" },
+      },
+    },
+    {
+      $group: {
+        _id: "$book.title",
+        totalBorrowCount: { $sum: 1 },
+        allReturnTrue: { $min: "$return_status" },
+      },
+    },
+    {
+      $match: {
+        allReturnTrue: false,
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        totalBorrowCount: 1,
+      },
+    },
   ]);
 };
 export {
@@ -76,4 +110,5 @@ export {
   borrow_history_repo,
   most_borrow_books_repo,
   active_members_repo,
+  borrowed_books,
 };

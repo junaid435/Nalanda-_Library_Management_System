@@ -1,12 +1,15 @@
 import {
   book_total_copies_update,
   find_book_by_id,
+  total_available_books,
+  total_book_count,
 } from "../repositories/book.repository.js";
 import {
   active_members_repo,
   borrow_book_repo,
   borrow_history_repo,
   borrow_return_repo,
+  borrowed_books,
   most_borrow_books_repo,
 } from "../repositories/borrow.repository.js";
 import { apiError } from "../utils/apiError.js";
@@ -62,10 +65,18 @@ const active_members = asyncHandler(async (req, res) => {
   const data = await active_members_repo();
   res.status(200).json(new apiResponse(200, data));
 });
+const book_availability=asyncHandler(async(req,res)=>{
+  let available_books=await total_available_books()
+  let count=await total_book_count()
+  let borrow_books=await borrowed_books()
+res.status(200).json(new apiResponse(200,{count,available_books,borrow_books}))
+  
+})
 export {
   borrow_book,
   borrow_return,
   borrow_history,
   most_borrow_books,
   active_members,
+  book_availability
 };
