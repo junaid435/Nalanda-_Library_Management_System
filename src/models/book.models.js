@@ -7,7 +7,7 @@ const book_schema = new mongoose.Schema({
   ISBN: {
     type: Number,
     required: true,
-    unique :true
+    unique: true,
   },
   publication_date: {
     type: Date,
@@ -21,7 +21,11 @@ const book_schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  author: {
+    type: String,
+    required: true,
+  },
 });
 
-const book_model= new mongoose.model('book',book_schema)
-export {book_model}
+const book_model = new mongoose.model("book", book_schema);
+export { book_model };
