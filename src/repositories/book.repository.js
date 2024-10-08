@@ -36,29 +36,25 @@ const delete_book_repo = (id) => {
 
 const list_book_repo = (filter_data) => {
   let { page, genre, author } = filter_data;
-  if(page==undefined||page==''){
-    page=1
+  if (page == undefined || page == "") {
+    page = 1;
   }
   const limit = 5;
 
-    let match = {};
-    if (genre !== "") {
-      match["genre"] = genre;
-    }
-    if (author !== "") {
-      match["author"] = author;
-    }
+  let match = {};
+  if (genre !== "") {
+    match["genre"] = genre;
+  }
+  if (author !== "") {
+    match["author"] = author;
+  }
 
-  const skip=(page-1)*limit
+  const skip = (page - 1) * limit;
 
   return book_model.aggregate([
-    {
-      $match:match,
-    },
-    { $skip : skip },
-    {
-      $limit:limit
-    }
+    { $match: match },
+    { $skip: skip },
+    { $limit: limit },
   ]);
 };
 export { create_book_repo, update_book_repo, delete_book_repo, list_book_repo };

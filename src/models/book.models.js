@@ -11,7 +11,7 @@ const book_schema = new mongoose.Schema({
   },
   publication_date: {
     type: Date,
-    default: Date.now(),
+    required: true,
   },
   genre: {
     type: String,
