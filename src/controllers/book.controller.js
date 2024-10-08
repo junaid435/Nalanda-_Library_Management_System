@@ -1,5 +1,6 @@
 import {
   create_book_repo,
+  delete_book_repo,
   update_book_repo,
 } from "../repositories/book.repository.js";
 import { apiResponse } from "../utils/apiResponse.js";
@@ -14,4 +15,8 @@ const update_book = asyncHandler(async (req, res) => {
   await update_book_repo(req.body);
   res.status(200).json(new apiResponse(200, [], "book updated successfully"));
 });
-export { create_book, update_book };
+const delete_book = asyncHandler(async (req, res) => {
+  await delete_book_repo(req.body.id);
+  res.status(200).json(new apiResponse(200, [], "book deleted successfully"));
+});
+export { create_book, update_book, delete_book };
