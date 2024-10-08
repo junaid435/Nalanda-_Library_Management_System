@@ -6,6 +6,7 @@ import {
   borrow_book_repo,
   borrow_history_repo,
   borrow_return_repo,
+  most_borrow_books_repo,
 } from "../repositories/borrow.repository.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
@@ -42,4 +43,19 @@ const borrow_history = asyncHandler(async (req, res) => {
   let data = await borrow_history_repo(req.user._id);
   res.status(200).json(new apiResponse(200, data));
 });
-export { borrow_book, borrow_return, borrow_history };
+const most_borrow_books = asyncHandler(async(req, res) => {
+     let data= await most_borrow_books_repo()
+     const report = {
+        reportTitle: "Top 5 Most Borrowed Books Report",
+        reportGeneratedAt: new Date().toISOString(),
+        topBooks: data.map((book, index) => ({
+          rank: index + 1,
+          title: book._id,
+          borrowCount: book.count
+        })),
+        summary: `The most borrowed book is "${data[0]._id}" with ${data[0].count} borrows.`
+      };
+     res.status(200).json(new apiResponse(200,report))
+     
+});
+export { borrow_book, borrow_return, borrow_history, most_borrow_books };
