@@ -17,9 +17,14 @@ const borrow_book = asyncHandler(async (req, res) => {
     );
   }
   await borrow_book_repo(req);
-  await book_total_copies_update(id);
+  await book_total_copies_update(book_data,false);
 
   res.status(201).json(new apiResponse(201, [], "borrow book successfully"));
 });
 
-export { borrow_book };
+const borrow_return=asyncHandler((req,res)=>{
+    const {id}=req.body
+    
+})
+
+export { borrow_book,borrow_return };
