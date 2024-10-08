@@ -14,6 +14,13 @@ app.use(
   })
 );
 
+//swagger
+import { specs, swaggerUi } from "./swagger.js";
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+
+
+
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 

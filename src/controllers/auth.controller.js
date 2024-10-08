@@ -12,8 +12,10 @@ import {
   validation_space,
 } from "../validation/user.validation.js";
 
+
+
 const user_register = asyncHandler(async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name } = req.body;  
   //validation
   user_validation_email(email);
   validation_space(password);
