@@ -12,5 +12,7 @@ const borrow_book_repo = (req) => {
 const borrow_return_repo = (id) => {
   return book_model.findByIdAndUpdate({ _id: id }, { $set: { return_status: true } });
 };
-
-export { borrow_book_repo, borrow_return_repo };
+const borrow_history_repo=(userID)=>{
+    return borrow_model.find({user:userID}).populate("user").populate('book')
+}
+export { borrow_book_repo, borrow_return_repo,borrow_history_repo };

@@ -4,6 +4,7 @@ import {
 } from "../repositories/book.repository.js";
 import {
   borrow_book_repo,
+  borrow_history_repo,
   borrow_return_repo,
 } from "../repositories/borrow.repository.js";
 import { apiError } from "../utils/apiError.js";
@@ -33,7 +34,12 @@ const borrow_return = asyncHandler(async (req, res) => {
   }
   await borrow_return_repo(id);
   await book_total_copies_update(book_data, true);
-  res.status(201).json(new apiResponse(201, [], "borrow book returned successfully"));
+  res
+    .status(201)
+    .json(new apiResponse(201, [], "borrow book returned successfully"));
 });
-
-export { borrow_book, borrow_return };
+const borrow_history = asyncHandler(async (req, res) => {
+  let data = await borrow_history_repo(req.user._id);
+  res.status(200).json(new apiResponse(200, data));
+});
+export { borrow_book, borrow_return, borrow_history };
