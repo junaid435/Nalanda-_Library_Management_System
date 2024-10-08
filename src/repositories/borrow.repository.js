@@ -47,9 +47,33 @@ const most_borrow_books_repo = () => {
     },
   ]);
 };
+const active_members_repo = () => {
+  return borrow_model.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $addFields: {
+        user: { $first: "$user" },
+      },
+    },
+    {
+        $group: {
+          _id: "$user.email",
+          count: { $sum: 1 },
+        },
+      },
+  ]);
+};
 export {
   borrow_book_repo,
   borrow_return_repo,
   borrow_history_repo,
   most_borrow_books_repo,
+  active_members_repo,
 };
