@@ -1,7 +1,16 @@
 import { book_model } from "../models/book.models.js";
+import { validation_space } from "../validation/user.validation.js";
 const create_book_repo = (book_data) => {
   const { title, ISBN, publication_date, genre, total_copies, author } =
     book_data;
+
+  validation_space(title);
+  validation_space(ISBN);
+  validation_space(publication_date);
+  validation_space(genre);
+  validation_space(total_copies);
+  validation_space(author);
+
   const book = new book_model({
     title: title,
     ISBN: ISBN,
@@ -15,6 +24,12 @@ const create_book_repo = (book_data) => {
 const update_book_repo = (book_data) => {
   const { title, ISBN, publication_date, genre, total_copies, id, author } =
     book_data;
+    validation_space(title);
+  validation_space(ISBN);
+  validation_space(publication_date);
+  validation_space(genre);
+  validation_space(total_copies);
+  validation_space(author);
   return book_model.findByIdAndUpdate(
     { _id: id },
     {
@@ -41,10 +56,11 @@ const list_book_repo = (filter_data) => {
   const limit = 5;
 
   let match = {};
-  if (genre !== "") {
+
+  if (genre !== "" && genre !== undefined) {
     match["genre"] = genre;
   }
-  if (author !== "") {
+  if (author !== "" && author !== undefined) {
     match["author"] = author;
   }
 
@@ -67,7 +83,7 @@ const total_book_count = () => {
   return book_model.find().countDocuments();
 };
 const total_available_books = () => {
-  return book_model.find({total_copies:{$gt:0}})
+  return book_model.find({ total_copies: { $gt: 0 } });
 };
 
 export {
@@ -78,5 +94,5 @@ export {
   find_book_by_id,
   book_total_copies_update,
   total_book_count,
-  total_available_books
+  total_available_books,
 };

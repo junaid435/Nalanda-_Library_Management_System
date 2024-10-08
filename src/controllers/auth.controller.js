@@ -7,9 +7,16 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import bcrypt from "bcrypt";
 import { apiError } from "../utils/apiError.js";
 import Jwt from "jsonwebtoken";
+import {
+  user_validation_email,
+  validation_space,
+} from "../validation/user.validation.js";
 
 const user_register = asyncHandler(async (req, res) => {
   const { email, password, name } = req.body;
+  user_validation_email(email);
+  validation_space(password);
+  validation_space(name);
   const salt = await bcrypt.genSalt(12);
   const hashePassword = await bcrypt.hash(password.toString(), salt);
   const userData = await find_user_email_repo(email);
@@ -24,6 +31,8 @@ const user_register = asyncHandler(async (req, res) => {
 
 const user_login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  user_validation_email(email);
+  validation_space(password);
   const userData = await find_user_email_repo(email);
   if (!userData) {
     throw new apiError(404, "User not found");
