@@ -6,7 +6,6 @@ dotenv.config({
   path: "./.env",
 });
 
-
 //middlewares
 app.use(
   cors({
@@ -21,11 +20,12 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 import { errorHandler } from "./middleware/error.middleware.js";
 
 //routes
-import auth_route from"./routes/auth.route.js"
-app.use('/user',auth_route)
+import auth_route from "./routes/auth.route.js";
+import book_route from "./routes/book.route.js";
 
+app.use("/api/v1/user", auth_route);
+app.use("/api/v1/book", book_route);
 
-
-app.use(errorHandler)
+app.use(errorHandler);
 
 export { app };

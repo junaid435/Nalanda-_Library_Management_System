@@ -1,4 +1,4 @@
-import { findUserEmailRepo } from "../repositories/user.repository.js";
+import { find_user_email_repo } from "../repositories/auth.repository.js";
 import { apiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
@@ -11,7 +11,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(token, process.env.USER_SECRET);
-    const user = await findUserEmailRepo(decodedToken);
+    const user = await find_user_email_repo(decodedToken);
     if (!user) {
       throw new apiError(401, "Invalid access token");
     }

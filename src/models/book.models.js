@@ -7,6 +7,7 @@ const book_schema = new mongoose.Schema({
   ISBN: {
     type: Number,
     required: true,
+    unique :true
   },
   publication_date: {
     type: Date,
@@ -16,7 +17,7 @@ const book_schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  totalCopies: {
+  total_copies: {
     type: Number,
     required: true,
   },
