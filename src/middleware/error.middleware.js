@@ -7,6 +7,9 @@ const errorHandler = (err, req, res, next) => {
     const field = Object.keys(err.keyValue)[0];
     error.message = `The ${field} already exists. Please use a different ${field}.`;
   }
+  if(error.name==='CastError'){
+    error.message = `please check you book id or retry`;
+  }
 
   if (!(error instanceof apiError)) {
     const statusCode =
