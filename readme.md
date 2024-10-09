@@ -46,7 +46,7 @@ The system incorporates JWT-based authentication and role-based access control, 
 ### Installation
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone [<repository-url>](https://github.com/muhammedjunaid123/Nalanda-_Library_Management_System.git)
    cd nalanda-library-management
    npm install
 
