@@ -10,8 +10,8 @@ const borrow_book_repo = (req) => {
   return borrow_book.save();
 };
 const borrow_return_repo = (id) => {
-  return borrow_model.findByIdAndUpdate(
-    { _id: id },
+  return borrow_model.findOneAndUpdate(
+    { book: id },
     { $set: { return_status: true } }
   );
 };

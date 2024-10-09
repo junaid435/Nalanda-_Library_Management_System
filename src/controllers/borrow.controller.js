@@ -42,11 +42,18 @@ const borrow_book = asyncHandler(async (req, res) => {
 
 const borrow_return = asyncHandler(async (req, res) => {
   const { id } = req.body;
-  let book_data = await find_book_by_id(id);
-  if (!book_data) {
-    throw new apiError(404, "The book is founded");
-  }
  
+  let user = await check_borrow_book(id, req.user._id);
+  if (!user) {
+    throw new apiError(404, "You have not borrowed this book");
+  }
+
+  if (user?.return_status === true) {
+    throw new apiError(
+      400,
+      "This book has already been returned and cannot be returned again"
+    );
+  }
   await borrow_return_repo(id);
   await book_total_copies_update(book_data, true);
   res
@@ -68,7 +75,7 @@ const most_borrow_books = asyncHandler(async (req, res) => {
       title: book._id,
       borrowCount: book.count,
     })),
-    summary: `The most borrowed book is "${data[0]._id}" with ${data[0].count} borrows.`,
+    summary: `The most borrowed book is ${data[0]._id} with ${data[0].count} borrows.`,
   };
   res.status(200).json(new apiResponse(200, report));
 });
