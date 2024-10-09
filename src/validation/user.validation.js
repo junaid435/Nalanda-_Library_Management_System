@@ -8,6 +8,7 @@ const user_validation_email = (email) => {
   }
 };
 const validation_space = (input) => {
+  input=input+''
   if (input.trim() == "") {
     throw new apiError(400, "input cannot be empty");
   }

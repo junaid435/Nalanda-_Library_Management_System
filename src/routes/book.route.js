@@ -109,7 +109,238 @@ route.use(verifyJWT)
 
 route.route('/list_book').get(list_book)
 route.use(isAdmin)
+
+/**
+ * @swagger
+ * /book/create_book:
+ *   post:
+ *     summary: Create a new book
+ *     tags:
+ *       - Books
+ *     security:
+ *       - BearerAuth: []  
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "The Great Gatsby"
+ *               ISBN:
+ *                 type: number
+ *                 example: 9780743273565
+ *               publication_date:
+ *                 type: string
+ *                 format: date
+ *                 example: "1925-04-10"
+ *               genre:
+ *                 type: string
+ *                 example: "Fiction"
+ *               total_copies:
+ *                 type: number
+ *                 example: 10
+ *               author:
+ *                 type: string
+ *                 example: "F. Scott Fitzgerald"
+ *             required:
+ *               - title
+ *               - ISBN
+ *               - publication_date
+ *               - genre
+ *               - total_copies
+ *               - author
+ *     responses:
+ *       201:
+ *         description: Book successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 201
+ *                 data:
+ *                   type: array
+ *                   items: []
+ *                 message:
+ *                   type: string
+ *                   example: "book created successfully"
+ *       403:
+ *         description: Access denied (only admins can access this route)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 403
+ *                 message:
+ *                   type: string
+ *                   example: "Access Denied: Admins only"
+ *       401:
+ *         description: Invalid or expired access token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid access token"
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: "Input cannot be empty"
+ *       500:
+ *         description: Duplicate ISBN error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "The ISBN already exists. Please use a different ISBN."
+ */
+
 route.route('/create_book').post(create_book)
+/**
+ * @swagger
+ * /book/update_book:
+ *   patch:
+ *     summary: Update an existing book
+ *     tags:
+ *       - Books
+ *     security:
+ *       - BearerAuth: []  
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: The ID of the book to update (ISBN or other unique identifier)
+ *                 example: "670615775614f750b560b5ff"
+ *               title:
+ *                 type: string
+ *                 example: "The Great Gatsby"
+ *               ISBN:
+ *                 type: number
+ *                 example: 9780743273565
+ *               publication_date:
+ *                 type: string
+ *                 format: date
+ *                 example: "1925-04-10"
+ *               genre:
+ *                 type: string
+ *                 example: "Fiction"
+ *               total_copies:
+ *                 type: number
+ *                 example: 10
+ *               author:
+ *                 type: string
+ *                 example: "F. Scott Fitzgerald"
+ *             required:
+ *               - id
+ *               - title
+ *               - ISBN
+ *               - publication_date
+ *               - genre
+ *               - total_copies
+ *               - author
+ *     responses:
+ *       200:
+ *         description: Book successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 data:
+ *                   type: array
+ *                   items: []
+ *                 message:
+ *                   type: string
+ *                   example: "book updated successfully"
+ *       403:
+ *         description: Access denied (only admins can access this route)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 403
+ *                 message:
+ *                   type: string
+ *                   example: "Access Denied: Admins only"
+ *       401:
+ *         description: Invalid or expired access token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid access token"
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: "Input cannot be empty"
+ *       500:
+ *         description: Duplicate ISBN error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "The ISBN already exists. Please use a different ISBN."
+ */
 route.route('/update_book').patch(update_book)
 route.route('/delete_book').delete(delete_book)
 export default route;
