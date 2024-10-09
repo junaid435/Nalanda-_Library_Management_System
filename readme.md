@@ -87,6 +87,6 @@ In my project, I have implemented global error handling using promises and highe
 
 For more information about the API and its endpoints, you can refer to the Swagger documentation I created:
 
-[API Documentation](http://localhost:3000/api-docs)
+(http://localhost:3000/api-docs)
 
 Feel free to explore the API and see how error handling is implemented throughout the application!
