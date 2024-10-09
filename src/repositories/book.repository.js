@@ -75,6 +75,8 @@ const list_book_repo = (filter_data) => {
   ]);
 };
 const find_book_by_id = (id) => {
+  console.log(id);
+  
   return book_model.findOne({ _id: id });
 };
 const book_total_copies_update = async (data, return_status) => {
