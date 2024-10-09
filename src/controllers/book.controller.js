@@ -21,12 +21,10 @@ const update_book = asyncHandler(async (req, res) => {
 });
 const delete_book = asyncHandler(async (req, res) => {
   const data=await find_book_by_id(req.query.id)
-  console.log(data);
-  
   if(!data){
     throw new apiError(404,"book is not found or already deleted")
   }
-  await delete_book_repo(req.body.id);
+  await delete_book_repo(req.query.id);
   res.status(200).json(new apiResponse(200, [], "book deleted successfully"));
 });
 const list_book = asyncHandler(async (req, res) => {
