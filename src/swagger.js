@@ -7,7 +7,8 @@ const options = {
     info: {
       title: "Swagger Express API",
       version: "1.0.0",
-      description: "Nalanda Library Management System",
+      description:
+        "Nalanda Library Management System \n To access authenticated routes, ensure you are logged in and have a valid token. After completing the login process, use the Authorize feature to set the token.For Admin Access, you can use the following credentials:Email: admin@gmail.com Password: admin",
     },
     servers: [
       {
