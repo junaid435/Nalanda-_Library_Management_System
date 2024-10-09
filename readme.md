@@ -47,7 +47,7 @@ The system incorporates JWT-based authentication and role-based access control, 
 1. **Clone the repository**
    ```bash
    git clone [<repository-url>](https://github.com/muhammedjunaid123/Nalanda-_Library_Management_System.git)
-   cd nalanda-library-management
+   cd Nalanda-_Library_Management_System
    npm install
 
 # MongoDB connection string
