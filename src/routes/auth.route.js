@@ -34,12 +34,7 @@
  *           type: boolean
  *           enum: [true, false]
  *           description: The role of the user member or admin
- *       example:
- *         id: 5f8d0a44b54764421b7156c4
- *         name: John Doe
- *         email: johndoe@example.com
- *         is_admin: true
- *         password: jhon1234 
+ *     
  *
  */
 
