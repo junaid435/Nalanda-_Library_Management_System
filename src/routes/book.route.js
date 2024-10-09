@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { create_book, delete_book, list_book, update_book } from "../controllers/book.controller.js";
+import {
+  create_book,
+  delete_book,
+  list_book,
+  update_book,
+} from "../controllers/book.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import { isAdmin } from "../middleware/admin_auth.middleware.js";
 const route = Router();
@@ -50,7 +55,7 @@ const route = Router();
  *           description: Name of the author of the book
  *           example: "J.K. Rowling"
  */
-route.use(verifyJWT)
+route.use(verifyJWT);
 
 /**
  * @swagger
@@ -61,7 +66,7 @@ route.use(verifyJWT)
  *       - Books
  *     description: Retrieve a list of all books. This route supports pagination and filters based on genre and author. Only accessible by users with 'member' or 'admin' roles.
  *     security:
- *       - BearerAuth: []   
+ *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -90,7 +95,7 @@ route.use(verifyJWT)
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Book'
- *      
+ *
  *       401:
  *         description: Unauthorized - JWT Token missing or invalid
  *         content:
@@ -104,21 +109,22 @@ route.use(verifyJWT)
  *                 message:
  *                   type: string
  *                   example: "Invalid access token"
- *      
+ *
  */
 
-route.route('/list_book').get(list_book)
-route.use(isAdmin)
+route.route("/list_book").get(list_book);
+route.use(isAdmin);
 
 /**
  * @swagger
  * /book/create_book:
  *   post:
  *     summary: Create a new book
+ *     description: Create a new book entry in the library. This route can only be accessed by users with 'admin' roles. Admin users must provide all required fields to successfully create a book.
  *     tags:
  *       - Books
  *     security:
- *       - BearerAuth: []  
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -165,10 +171,10 @@ route.use(isAdmin)
  *                   example: 201
  *                 data:
  *                   type: array
- *                   items: []
+ *                   items: {}
  *                 message:
  *                   type: string
- *                   example: "book created successfully"
+ *                   example: "Book created successfully"
  *       403:
  *         description: Access denied (only admins can access this route)
  *         content:
@@ -223,16 +229,18 @@ route.use(isAdmin)
  *                   example: "The ISBN already exists. Please use a different ISBN."
  */
 
-route.route('/create_book').post(create_book)
+
+route.route("/create_book").post(create_book);
 /**
  * @swagger
  * /book/update_book:
  *   patch:
  *     summary: Update an existing book
+ *     description: Update an existing book entry in the library. This route can only be accessed by users with 'admin' roles. Admin users must provide all required fields to successfully update a book. The book is identified by its unique ID.
  *     tags:
  *       - Books
  *     security:
- *       - BearerAuth: []  
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -242,7 +250,7 @@ route.route('/create_book').post(create_book)
  *             properties:
  *               id:
  *                 type: string
- *                 description: The ID of the book to update (ISBN or other unique identifier)
+ *                 description: The ID of the book to update (e.g., unique identifier in the database)
  *                 example: "670615775614f750b560b5ff"
  *               title:
  *                 type: string
@@ -284,10 +292,10 @@ route.route('/create_book').post(create_book)
  *                   example: 200
  *                 data:
  *                   type: array
- *                   items: []
+ *                   items: {}
  *                 message:
  *                   type: string
- *                   example: "book updated successfully"
+ *                   example: "Book updated successfully"
  *       403:
  *         description: Access denied (only admins can access this route)
  *         content:
@@ -341,6 +349,97 @@ route.route('/create_book').post(create_book)
  *                   type: string
  *                   example: "The ISBN already exists. Please use a different ISBN."
  */
-route.route('/update_book').patch(update_book)
-route.route('/delete_book').delete(delete_book)
+
+route.route("/update_book").patch(update_book);
+/**
+ * @swagger
+ * /book/delete_book:
+ *   delete:
+ *     summary: Delete a specific book
+ *     description: Delete a specific book from the library. This route can only be accessed by users with 'admin' roles. Admin users must provide the unique ID of the book they wish to delete.
+ *     tags:
+ *       - Books
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: The ID of the book to delete (unique identifier)
+ *         schema:
+ *           type: string
+ *           example: "670615775614f750b560b5ff"
+ *     responses:
+ *       200:
+ *         description: Book successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 data:
+ *                   type: array
+ *                   items: {}
+ *                 message:
+ *                   type: string
+ *                   example: "Book deleted successfully"
+ *       403:
+ *         description: Access denied (only admins can access this route)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 403
+ *                 message:
+ *                   type: string
+ *                   example: "Access Denied: Admins only"
+ *       401:
+ *         description: Invalid or expired access token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid access token"
+ *       404:
+ *         description: Book is not found or already deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: "Book is not found or already deleted"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "An unexpected error occurred"
+ */
+
+
+route.route("/delete_book").delete(delete_book);
 export default route;
