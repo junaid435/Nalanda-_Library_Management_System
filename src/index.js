@@ -1,6 +1,6 @@
 import { app } from "./app.js";
-import  connectDB  from "./db/index.js";
-
+import connectDB from "./db/index.js";
+import job from "./job.js";
 
 connectDB()
   .then(() => {
