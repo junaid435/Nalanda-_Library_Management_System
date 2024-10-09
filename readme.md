@@ -50,24 +50,38 @@ The system incorporates JWT-based authentication and role-based access control, 
    cd Nalanda-_Library_Management_System
    npm install
 
-# MongoDB connection string
-MONGODB_URI=mongodb://127.0.0.1:27017
+# Running the Application
 
-# JWT secret key for encoding and decoding tokens
+To run the application, use the appropriate command based on your needs:
+
+- **Development Mode**: `npm run start`
+- **Watch Mode**: `npm run dev`
+
+## Contact
+
+For any questions, suggestions, or support, feel free to reach out:
+
+- **Email:** [junaidvinu133@gmail.com](mailto:junaidvinu133@gmail.com)
+
+
+
+ If you have any feedback or need assistance, don't hesitate to contact me.
+
+
+## Environment Setup
+
+Ensure you have a `.env` file in the root directory with the following environment variables:
+
+```env
+PORT=3000
+MONGO_URL=mongodb://127.0.0.1:27017
 JWT_SECRET=fasdfjishrfweihfi
 
-# Port for the application to run on
-PORT=3000
+```
 
 # Error Handling in My Project
 
 In my project, I have implemented global error handling using promises and higher-order functions. This approach ensures that errors are managed consistently across the application, providing a better user experience and easier debugging.
-
-## Key Features
-
-- **Global Error Handling**: Centralized error management that captures errors from different parts of the application.
-- **Promises**: Leveraging promises to handle asynchronous operations and errors effectively.
-- **Higher-Order Functions**: Utilizing higher-order functions to create reusable error handling logic.
 
 ## API Documentation
 
