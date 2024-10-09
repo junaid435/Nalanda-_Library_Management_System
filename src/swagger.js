@@ -9,23 +9,22 @@ const options = {
       version: "1.0.0",
       description: "Nalanda Library Management System",
     },
-    components: {
-      securitySchemas: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormate: "JWT",
-        },
-      },
-    },
-    security: {
-      bearerAuth: [],
-    },
     servers: [
       {
         url: `http://localhost:3000/api/v1`,
+        description: "Development server",
       },
     ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT", // Optional
+        },
+      },
+    },
+    security: [{ BearerAuth: [] }],
   },
 
   apis: ["./src/routes/*.js", "./src/models/*.js"],
