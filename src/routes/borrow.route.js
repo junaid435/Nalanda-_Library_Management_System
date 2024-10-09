@@ -108,6 +108,19 @@ route.use(verifyJWT)
  *                 message:
  *                   type: string
  *                   example: "Borrow book successfully"
+ *       400:
+ *         description: User has already borrowed this book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: "You can only borrow this book once"
  *       404:
  *         description: Book not found
  *         content:
@@ -163,7 +176,89 @@ route.use(verifyJWT)
  */
 
 
+
 route.route('/borrow_book').post(borrow_book)
+/**
+ * @swagger
+ * /borrow/return_book:
+ *   post:
+ *     summary: Return a borrowed book
+ *     description: Allows users to return a borrowed book to the library. This route can be accessed by both admin and member roles. Users must provide the unique ID of the book they wish to return.
+ *     tags:
+ *       - Borrowing
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: The ID of the book to return (unique identifier)
+ *                 example: "670615775614f750b560b5ff"
+ *     responses:
+ *       201:
+ *         description: Book returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 201
+ *                 data:
+ *                   type: array
+ *                   items: {}
+ *                 message:
+ *                   type: string
+ *                   example: "Borrowed book returned successfully"
+ *       404:
+ *         description: Book not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: "The book is not found"
+ *       401:
+ *         description: Invalid or expired access token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid access token"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "An unexpected error occurred"
+ */
+
 route.route('/borrow_return').patch(borrow_return)
 route.route('/borrow_history').get(borrow_history)
 route.route('/most_borrow_books').get(most_borrow_books)

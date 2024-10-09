@@ -15,6 +15,9 @@ const borrow_return_repo = (id) => {
     { $set: { return_status: true } }
   );
 };
+const check_borrow_book=(bookid,userid)=>{
+  return borrow_model.findOne({book:bookid,user:userid})
+}
 const borrow_history_repo = (userID) => {
   return borrow_model.find({ user: userID }).populate("user").populate("book");
 };
@@ -112,4 +115,5 @@ export {
   most_borrow_books_repo,
   active_members_repo,
   borrowed_books,
+  check_borrow_book
 };

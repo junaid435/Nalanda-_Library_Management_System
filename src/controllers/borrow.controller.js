@@ -10,6 +10,7 @@ import {
   borrow_history_repo,
   borrow_return_repo,
   borrowed_books,
+  check_borrow_book,
   most_borrow_books_repo,
 } from "../repositories/borrow.repository.js";
 import { apiError } from "../utils/apiError.js";
@@ -20,11 +21,8 @@ const borrow_book = asyncHandler(async (req, res) => {
   const { id } = req.body;
   let book_data = await find_book_by_id(id);
   //checking the book is still have copys
-  if(!book_data){
-    throw new apiError(
-      404,
-      " book is not found"
-    );
+  if (!book_data) {
+    throw new apiError(404, " book is not found");
   }
   if (book_data?.total_copies <= 0) {
     throw new apiError(
@@ -32,7 +30,10 @@ const borrow_book = asyncHandler(async (req, res) => {
       "The book is currently out of stock and cannot be borrowed"
     );
   }
-  
+  let user = await check_borrow_book(id, req.user._id);
+  if (user) {
+    throw new apiError(400, "You can only borrow this book once");
+  }
   await borrow_book_repo(req);
   await book_total_copies_update(book_data, false);
 
@@ -45,6 +46,7 @@ const borrow_return = asyncHandler(async (req, res) => {
   if (!book_data) {
     throw new apiError(404, "The book is founded");
   }
+ 
   await borrow_return_repo(id);
   await book_total_copies_update(book_data, true);
   res
