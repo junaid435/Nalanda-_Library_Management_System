@@ -20,12 +20,19 @@ const borrow_book = asyncHandler(async (req, res) => {
   const { id } = req.body;
   let book_data = await find_book_by_id(id);
   //checking the book is still have copys
+  if(!book_data){
+    throw new apiError(
+      404,
+      " book is not found"
+    );
+  }
   if (book_data?.total_copies <= 0) {
     throw new apiError(
       409,
       "The book is currently out of stock and cannot be borrowed"
     );
   }
+  
   await borrow_book_repo(req);
   await book_total_copies_update(book_data, false);
 
