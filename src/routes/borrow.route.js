@@ -410,6 +410,76 @@ route.route('/borrow_history').get(borrow_history)
  */
 
 route.route('/most_borrow_books').get(most_borrow_books)
+/**
+ * @swagger
+ * /borrow/active_members:
+ *   get:
+ *     summary: Retrieve a list of active members
+ *     description: Allows users to retrieve a list of active members in the library. This route can be accessed by both admin and member roles. Users need to be authenticated to access this endpoint.
+ *     tags:
+ *       - Borrowing
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the list of active members
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 200
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         description: ID of the active member (typically the email)
+ *                         example: "user@example.com"
+ *                       count:
+ *                         type: integer
+ *                         description: Count of activities or borrows associated with the member
+ *                         example: 1
+ *                 message:
+ *                   type: string
+ *                   example: "Success"
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       401:
+ *         description: Invalid or expired access token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid access token"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "An unexpected error occurred"
+ */
+
+
 route.route('/active_members').get(active_members)
+
 route.route('/book_availability').get(book_availability)
 export default route;
