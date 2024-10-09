@@ -15,6 +15,10 @@ const options = {
         url: `http://localhost:3000/api/v1`,
         description: "Development server",
       },
+      {
+        url:'https://nalanda-library-management-system-8iza.onrender.com/api/v1',
+        description: "deployed server",
+      }
     ],
     components: {
       securitySchemes: {
