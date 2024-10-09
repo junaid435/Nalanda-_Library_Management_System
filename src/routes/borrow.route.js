@@ -202,7 +202,7 @@ route.route('/borrow_book').post(borrow_book)
  *                   example: 400
  *                 message:
  *                   type: string
- *                   example: "You have not borrowed this book"
+ *                   example: "This book has already been returned and cannot be returned again or You have not borrowed this book "
  *       401:
  *         description: Invalid or expired access token
  *         content:
@@ -480,6 +480,101 @@ route.route('/most_borrow_books').get(most_borrow_books)
 
 
 route.route('/active_members').get(active_members)
+/**
+ * @swagger
+ * /borrow/book_availability:
+ *   get:
+ *     summary: Get availability information for books
+ *     description: Retrieves information about the total number of books, available books, and currently borrowed books. This endpoint can be accessed by both admin and member roles.
+ *     tags:
+ *       - Borrowing
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved book availability information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: integer
+ *                       description: Total number of books in the library
+ *                       example: 150
+ *                     available_books:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                             description: Unique identifier of the available book
+ *                             example: "670615775614f750b560b5ff"
+ *                           title:
+ *                             type: string
+ *                             description: Title of the available book
+ *                             example: "Harry Potter and the Sorcerer's Stone"
+ *                           author:
+ *                             type: string
+ *                             description: Author of the available book
+ *                             example: "J.K. Rowling"
+ *                     borrow_books:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                             description: Unique identifier of the borrowed book
+ *                             example: "670615775614f750b560b5ff"
+ *                           title:
+ *                             type: string
+ *                             description: Title of the borrowed book
+ *                             example: "Harry Potter and the Chamber of Secrets"
+ *                           borrower:
+ *                             type: string
+ *                             description: ID of the user who borrowed the book
+ *                             example: "60b85f3b0d36c80015d4c542"
+ *                 message:
+ *                   type: string
+ *                   example: "Success"
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       401:
+ *         description: Invalid or expired access token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid access token"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "An unexpected error occurred"
+ */
 
 route.route('/book_availability').get(book_availability)
 export default route;

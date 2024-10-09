@@ -31,6 +31,7 @@ const borrow_book = asyncHandler(async (req, res) => {
     );
   }
   let user = await check_borrow_book(id, req.user._id);
+
   if (user) {
     throw new apiError(400, "You can only borrow this book once");
   }
@@ -42,16 +43,12 @@ const borrow_book = asyncHandler(async (req, res) => {
 
 const borrow_return = asyncHandler(async (req, res) => {
   const { id } = req.body;
- 
+  let book_data = await find_book_by_id(id);
   let user = await check_borrow_book(id, req.user._id);
   if (!user) {
-    throw new apiError(404, "You have not borrowed this book");
-  }
-
-  if (user?.return_status === true) {
     throw new apiError(
       400,
-      "This book has already been returned and cannot be returned again"
+      "This book has already been returned and cannot be returned again or You have not borrowed this book "
     );
   }
   await borrow_return_repo(id);

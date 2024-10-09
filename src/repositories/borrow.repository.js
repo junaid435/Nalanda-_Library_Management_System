@@ -11,12 +11,12 @@ const borrow_book_repo = (req) => {
 };
 const borrow_return_repo = (id) => {
   return borrow_model.findOneAndUpdate(
-    { book: id },
+    { book: id,return_status:false },
     { $set: { return_status: true } }
   );
 };
 const check_borrow_book=(bookid,userid)=>{
-  return borrow_model.findOne({book:bookid,user:userid})
+  return borrow_model.findOne({book:bookid,user:userid,return_status:false})
 }
 const borrow_history_repo = (userID) => {
   return borrow_model.find({ user: userID }).populate("user").populate("book");
